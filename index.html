@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html dir="rtl" ng-app="maagalimDev">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>מעגלים 2.0</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive-rtl.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="css/plugins/timeline/timeline.css" rel="stylesheet">
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="css/opa-icons.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="bootstrap-application-wizard/src/bootstrap-wizard.css" rel="stylesheet">
+    <link href="css/bootstrap-rtl.min.css" rel="stylesheet">
+    <link href="css/maagalim.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="img/logo.png" />&nbsp;&nbsp;מעגלים 2.0</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-left" ng-controller="userController">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon" ng-class="{'icon-red icon-envelope-open': (messages.all('seen')), 'icon-black icon-envelope-closed' : !messages.all('seen')}"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li ng-repeat="msg in messages">
+                            <a href="/message/{{msg.id}}">
+                                <div>
+                                    <strong>{{msg.from}}</strong>
+                                    <span class="pull-left text-muted">
+                                        <em>{{msg.time.toLocaleString()}}</em>
+                                    </span>
+                                </div>
+                                <div>{{msg.message}}</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>לכל ההודעות</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> פרטי הדרכה</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> ניתוק</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+        </nav>
+        <!-- /.navbar-static-top -->
+
+        <div class="row col-lg-12">
+            <div class="navbar-default navbar-static-side col-lg-2" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="חיפוש מהיר...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+
+                        <li class="nav-header">כללי</li>
+                        <li><a href="/"><i class="icon icon-black icon-home"></i>&nbsp;&nbsp;דף הבית</a></li>
+
+                        <li class="nav-header">מנו"ף</li>
+                        <li><a href="/wizard"><i class="icon icon-black icon-folder-open"></i><span>&nbsp;&nbsp;אשף פעילות חדשה</span></a></li>
+
+                        <li class="nav-header hidden-tablet">התלמידים שלי</li>
+                        <li><a class="ajax-link" href="#"><i class="icon icon-black icon-briefcase"></i><span>&nbsp;&nbsp;כיתות</span></a></li>
+                        <li><a class="ajax-link" href="#"><i class="icon-headphones"></i><span>&nbsp;&nbsp;שיחות</span></a></li>
+                        <li><a class="ajax-link" href="#"><i class="icon-road"></i><span>&nbsp;&nbsp;הכוון</span></a></li>
+                        <li><a class="ajax-link" href="#"><i class="icon icon-black icon-flag"></i><span>&nbsp;&nbsp;פעילויות</span></a></li>
+                        <li class="nav-header hidden-tablet">דו"חות</li>
+
+                    </ul>
+                    <!-- /#side-menu -->
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+
+            <div class="col-lg-10" ng-view>
+
+            </div>
+            <!-- /#page-wrapper -->
+        </div>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Core Scripts - Include with every page -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-route.js"></script>
+    <script src="js/angular-animate.js"></script>
+    <script src="js/angular-mocks.js"></script>
+    <script src="js/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script src="js/main.js"></script>
+    <script src="bootstrap-application-wizard/src/bootstrap-wizard.js"></script>
+    <script src="js/maagalim.js"></script>
+    <script src="tests/mocks.js"></script>
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="js/sb-admin.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            console.log('ready called');
+            $('#side-menu li:not(.nav-header)').hover(function(){
+                        $(this).animate({'margin-right':'+=5'},300);
+                    },
+                    function(){
+                        $(this).animate({'margin-right':'-=5'},300);
+                    })
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<div class="center-block row" >
+    <a title="{{classes.length == 1 ? 'כיתה אחת' : classes.length + ' כיתות'}}" class="well span2 top-block" href="#">
+        <span class="icon32 icon-orange icon-book"></span>
+        <div>סה"כ כיתות</div>
+        <div>{{classes.length}}</div>
+    </a>
+    <a title="{{studentsCount == 1 ? 'תלמיד אחד' : studentsCount + ' תלמידים'}}" class="well span2 top-block" href="#">
+        <span class="icon32 icon-red icon-user"></span>
+        <div>סה"כ תלמידים</div>
+        <div>{{studentsCount}}</div>
+    </a>
+    <a title="{{totalConvsCount.total == 1 ? 'שיחה אחת' : totalConvsCount.total + ' שיחות'}}" class="well span2 top-block" href="#">
+        <span class="icon32 icon-green icon-messages"></span>
+        <div>סה"כ שיחות</div>
+        <div>{{totalConvsCount.total}}</div>
+    </a>
+    <a title="{{totalActivities.total == 1 ? 'פעילות אחת' : totalActivities.total + ' פעילויות'}}" class="well span2 top-block" href="#">
+        <span class="icon32 icon-blue icon-date"></span>
+        <div>סה"כ פעילויות</div>
+        <div>{{totalActivities.total}}</div>
+    </a>
+    <a title="{{totalHours == 1 ? 'שעה אחת' : totalHours.total + ' שעות'}}" class="well span2 top-block" href="#">
+        <span class="icon32 icon-black icon-clock"></span>
+        <div>סה"כ שעות החודש (כללי)</div>
+        <div>{{totalHours.month}} ({{totalHours.total}})</div>
+    </a>
+</div>
+
+<div class="row" >
+    <ul class="pricing-table dark" contenteditable="" id="light">
+        <li ng-repeat="feat in features" class="col-lg-3" ng-class="{'success active': feat.hover }" ng-mouseenter="feat.hover = true" ng-mouseleave="feat.hover = false">
+            <h3>{{feat.title}}</h3>
+            <div class="price-body">
+                <div class="price">
+                    <span class="price-figure">{{feat.mainNumber}} </span>
+                    <span class="price-term">מולאו החודש</span>
+                </div>
+            </div>
+            <div class="features">
+                <ul style="height: 50px;">
+                    <li ng-repeat="b in feat.bullets">{{b}}</li>
+                </ul>
+            </div>
+            <div class="footer">
+                <a href="#" class="btn btn-info btn-rect" ng-class="{'btn-metis-1 btn-lg': feat.hover}">צפייה ועדכון</a>
+            </div>
+        </li>
+        <div class="clearfix"></div>
+    </ul>
+</div>
