@@ -83,6 +83,10 @@ controllers.controller('wizardController', function($scope) {
     console.log('wizardController created');
 });
 
+controllers.controller('directionController', function($scope) {
+    console.log('directionController created');
+});
+
 var maagalimApp = angular.module('maagalimApp', ['ngRoute', 'ui.bootstrap', 'controllers']);
 
 maagalimApp.config(['$routeProvider', '$locationProvider',
@@ -90,5 +94,6 @@ maagalimApp.config(['$routeProvider', '$locationProvider',
         $routeProvider
             .when('/', {templateUrl: 'partials/main.html', controller: 'dashboardController' })
             .when('/wizard', {templateUrl: 'partials/wizard.html', controller: 'wizardController'})
+            .when('/direction', {templateUrl: 'partials/direction.html', controller: 'directionController'});
         $locationProvider.html5Mode(true);
     }]);
