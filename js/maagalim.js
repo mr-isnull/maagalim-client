@@ -81,6 +81,31 @@ controllers.controller('userController', function($scope, $http) {
 
 controllers.controller('wizardController', function($scope) {
     console.log('wizardController created');
+    $scope.today = function() {
+        $scope.dt = new Date();
+    };
+    $scope.today();
+
+    // Disable weekend selection
+    $scope.disabled = function(date, mode) {
+        return ( mode === 'day' && ( date.getDay() === 5 || date.getDay() === 6 ) );
+    };
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+    $scope.opened = true;
+
+    $scope.dateOptions = {
+        'year-format': "'yyyy'",
+        'starting-day': 0,
+        'show-weeks': false
+    };
+
+    $scope.format = 'dd/MM/yyyy';
 });
 
 controllers.controller('directionController', function($scope) {

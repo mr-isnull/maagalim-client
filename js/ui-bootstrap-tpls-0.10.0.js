@@ -889,6 +889,11 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
     return { date: date, label: dateFilter(date, format), selected: !!isSelected, secondary: !!isSecondary };
   }
 
+  function makeDateFromLabel(date, label, isSelected, isSecondary) {
+    return { date: date, label: label, selected: !!isSelected, secondary: !!isSecondary };
+  }
+
+  var monthNames = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
   this.modes = [
     {
       name: 'day',
@@ -911,9 +916,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
           days[i] = makeDate(dt, format.day, (selected && selected.getDate() === dt.getDate() && selected.getMonth() === dt.getMonth() && selected.getFullYear() === dt.getFullYear()), dt.getMonth() !== month);
         }
         for (var j = 0; j < 7; j++) {
-          labels[j] = dateFilter(days[j].date, format.dayHeader);
+          labels[j] =  String.fromCharCode('א'.charCodeAt(0) + j); //dateFilter(days[j].date, format.dayHeader);
         }
-        return { objects: days, title: dateFilter(date, format.dayTitle), labels: labels };
+        return { objects: days, title: monthNames[date.getMonth()] + ' ' + (date.getYear() + 1900), labels: labels };
       },
       compare: function(date1, date2) {
         return (new Date( date1.getFullYear(), date1.getMonth(), date1.getDate() ) - new Date( date2.getFullYear(), date2.getMonth(), date2.getDate() ) );
@@ -927,9 +932,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
         var months = new Array(12), year = date.getFullYear();
         for ( var i = 0; i < 12; i++ ) {
           var dt = new Date(year, i, 1);
-          months[i] = makeDate(dt, format.month, (selected && selected.getMonth() === i && selected.getFullYear() === year));
+          months[i] = makeDateFromLabel(dt, monthNames[i], (selected && selected.getMonth() === i && selected.getFullYear() === year));
         }
-        return { objects: months, title: dateFilter(date, format.monthTitle) };
+        return { objects: months, title: monthNames[date.getMonth()] };
       },
       compare: function(date1, date2) {
         return new Date( date1.getFullYear(), date1.getMonth() ) - new Date( date2.getFullYear(), date2.getMonth() );
@@ -3485,9 +3490,9 @@ angular.module("template/datepicker/datepicker.html", []).run(["$templateCache",
     "<table>\n" +
     "  <thead>\n" +
     "    <tr>\n" +
-    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left\" ng-click=\"move(-1)\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left\" ng-click=\"move(-1)\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
     "      <th colspan=\"{{rows[0].length - 2 + showWeekNumbers}}\"><button type=\"button\" class=\"btn btn-default btn-sm btn-block\" ng-click=\"toggleMode()\"><strong>{{title}}</strong></button></th>\n" +
-    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right\" ng-click=\"move(1)\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right\" ng-click=\"move(1)\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
     "    </tr>\n" +
     "    <tr ng-show=\"labels.length > 0\" class=\"h6\">\n" +
     "      <th ng-show=\"showWeekNumbers\" class=\"text-center\">#</th>\n" +
@@ -3513,7 +3518,6 @@ angular.module("template/datepicker/popup.html", []).run(["$templateCache", func
     "	<li ng-show=\"showButtonBar\" style=\"padding:10px 9px 2px\">\n" +
     "		<span class=\"btn-group\">\n" +
     "			<button type=\"button\" class=\"btn btn-sm btn-info\" ng-click=\"today()\">{{currentText}}</button>\n" +
-    "			<button type=\"button\" class=\"btn btn-sm btn-default\" ng-click=\"showWeeks = ! showWeeks\" ng-class=\"{active: showWeeks}\">{{toggleWeeksText}}</button>\n" +
     "			<button type=\"button\" class=\"btn btn-sm btn-danger\" ng-click=\"clear()\">{{clearText}}</button>\n" +
     "		</span>\n" +
     "		<button type=\"button\" class=\"btn btn-sm btn-success pull-right\" ng-click=\"isOpen = false\">{{closeText}}</button>\n" +

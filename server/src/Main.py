@@ -26,10 +26,21 @@ class GeneralHandler(RequestHandler):
         self.response.headers['Content-Type'] = mimetypes.guess_type(index_path)
         self.response.write(content)
 
+class TestHandler(RequestHandler):
+    def get(self):
+        test_path = os.path.join(root_dir, 'test.html')
+        with open(test_path) as test_file:
+            content = test_file.read()
+
+        self.response.headers['Content-Type'] = mimetypes.guess_type(test_path)
+        self.response.write(content)
+
+
 class Server(object):
     def __init__(self, port):
         self.__port = port
         routes = [
+		    ('/test', TestHandler),
                     (r'/.*', GeneralHandler)
                  ]
         static_app = StaticURLParser(root_dir)
