@@ -85,6 +85,13 @@ controllers.controller('wizardController', function($scope) {
 
 controllers.controller('directionController', function($scope) {
     console.log('directionController created');
+
+    var shvatVisits = [{inst:"קרני שומרון" , feedback : "היה מוצלח"},
+                        {inst: "ישיבת תל אביב", feedback : "היה מעפן"}];
+
+    var adarVisits = [{inst: "עלי", feedback : "היה מאוד מוצלח, נראה שזה המקום"}];
+
+    $scope.visits = {shvat : shvatVisits , adar : adarVisits};
 });
 
 var maagalimApp = angular.module('maagalimApp', ['ngRoute', 'ui.bootstrap', 'controllers']);
