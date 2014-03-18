@@ -1,10 +1,10 @@
-<div class="col-xs-9" style="height: 550px; overflow: auto;" data-spy="scroll" data-target="#myScrollspy">
+<div class="col-xs-9" style="height: 550px; overflow: auto;" data-spy="scroll" data-target="#leftmenu">
     <form role="form" name="wizard_form">
         <div class="form-group">
             <h2 id="section-general"><i class="fa fa-calendar" />&nbsp;&nbsp;כללי</h2>
             <div step="Dates">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label for="wizard_date" class="col-lg-2" style="margin-top: 5px;">תאריך</label>
                         <input type="text" class="form-control col-lg-6"
                                id="wizard_date" name="wizard_date" placeholder="תאריך..."
@@ -17,7 +17,7 @@
                 </div>
                 <br/>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label for="wizard_class" class="col-lg-2" style="margin-top: 5px;">כיתה</label>
                         <select class="form-control col-lg-6"
                                id="wizard_class" name="wizard_class" placeholder="בחר/י כיתה..."
@@ -29,24 +29,57 @@
                 </div>
             </div>
             <hr>
-            <div step="Hours">
+            <div step="Hours" class="col-lg-12">
                 <h2 id="section-hours"><i class="fa fa-clock-o" />&nbsp;&nbsp;שעות והחזרים</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="wizard_hours" class="col-lg-2" style="margin-top: 5px;">שעות</label>
-                        <input class="form-control col-lg-4 text-center" type="number" min="0" max="10" step="0.5"
-                                id="wizard_hours" name="wizard_hours" placeholder="שעות בכיתה"
-                                ng-model="hours.wizard_hours" ng-required="true" />
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="wizard_hours" class="col-lg-3" style="margin-top: 5px;">שעות</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="10" step="0.5"
+                                    id="wizard_hours" name="wizard_hours" placeholder="שעות בכיתה"
+                                    ng-model="hours.wizard_hours" ng-required="true" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="wizard_km" class="col-lg-3" style="margin-top: 5px;">ק"מ</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="1000" step="0.5"
+                                   id="wizard_km" name="wizard_km" placeholder='ק"מ'
+                                   ng-model="hours.wizard_km" ng-required="true" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="wizard_trans" class="col-lg-3" style="margin-top: 5px;">נסיעות</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="1000" step="0.5"
+                                   id="wizard_trans" name="wizard_trans" placeholder='נסיעות'
+                                   ng-model="hours.wizard_trans" ng-required="true" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row" ng-class="{'alert-info': hours.wizard_other_refunds}">
+                        <div class="col-lg-12">
+                            <label for="wizard_other_refunds" class="col-lg-3" style="margin-top: 5px;">שונות</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="1000" step="0.5"
+                                   id="wizard_other_refunds" name="wizard_other_refunds" placeholder='שונות'
+                                   ng-model="hours.wizard_other_refunds" ng-required="true" />
+                        </div>
+                        <p>&nbsp;</p>
+                        <div class="col-lg-12" ng-show="hours.wizard_other_refunds" >
+                            <label for="wizard_other_refunds_notes" class="col-lg-3" style="margin-top: 5px;">סיבת החזרים</label>
+                            <textarea class="form-control col-lg-9" rows="3"
+                                   id="wizard_other_refunds_notes" name="wizard_other_refunds_notes" placeholder='סיבת החזרים'
+                                   ng-model="hours.wizard_other_refunds_notes"></textarea>
+                        </div>
                     </div>
                 </div>
-                <br/>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="wizard_km" class="col-lg-2" style="margin-top: 5px;">ק"מ</label>
-                        <input class="form-control col-lg-4 text-center" type="number" min="0" max="1000" step="0.5"
-                               id="wizard_km" name="wizard_km" placeholder='ק"מ'
-                               ng-model="hours.wizard_km" ng-required="true" />
-                    </div>
+                <div class="col-lg-6">
+                    <label for="wizard_general_notes" class="col-lg-12" style="margin-top: 5px;">הערות כלליות</label>
+                    <textarea class="form-control col-lg-12 text-right" rows="8"
+                           id="wizard_general_notes" name="wizard_general_notes" placeholder='הערות כלליות'
+                           ng-model="wizard_general_notes" ng-required="true"></textarea>
                 </div>
                 <hr>
             </div>
@@ -64,7 +97,7 @@
         </div>
     </form>
 </div>
-<div class="col-xs-3 text-center affix-top" id="myScrollspy" data-spy="affix" data-offset-top="25">
+<div class="col-xs-3 text-center affix-top" id="leftmenu" data-spy="affix" data-offset-top="25">
     <div class="alert alert-info">
         <strong>
             {{dates.wizard_date ? dates.wizard_date.string() : '[בחר תאריך]'}} -
@@ -73,18 +106,18 @@
     </div>
     <ul class="center-block nav nav-tabs nav-stacked" >
         <li class="active"><a href="#section-general">תאריכים</a></li>
-        <li><a href="#section-hours">שעות והחזרים</a></li>
-        <li><a href="#section-3">שיחות אישיות</a></li>
-        <li><a href="#section-4">הכוון</a></li>
-        <li><a href="#section-5">פעילות כיתתית</a></li>
-        <li><a href="#section-6">מודל שנתי</a></li>
+        <li><a href="" ng-href="#section-hours">שעות והחזרים</a></li>
+        <li><a ng-click="goto('section-3')">שיחות אישיות</a></li>
+        <li><a ng-click="goto('section-4')">הכוון</a></li>
+        <li><a ng-click="goto('section-5')">פעילות כיתתית</a></li>
+        <li><a ng-click="goto('section-6')">מודל שנתי</a></li>
     </ul>
     <br/>
     <div id="wizard_progress">
         <label class="text-right">מצב מילוי האשף:</label>
         <br/>
-        <progressbar max="100" ng-class="{'progress-striped active': wizard_percentage < 100, '': wizard_percentage == 100}" type="{{wizard_progress_type()}}" value="wizard_percentage">
-            <span style="color: {{wizard_progress_color}};" >{{wizard_percentage}}%</span>
+        <progressbar max="100" ng-class="{'progress-striped active': wizard_percentage < 100, '': wizard_percentage == 100}" type="{{calc_wizard_progress_type()}}" value="wizard_percentage">
+            <span ng-style="{'color': wizard_progress_color}" >{{wizard_percentage}}%</span>
         </progressbar>
     </div>
 </div>
