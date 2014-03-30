@@ -149,3 +149,17 @@ ul.nav-tabs li:last-child a{
 ul.nav-tabs.affix{
     top: 30px; /* Set the top position of pinned element */
 }
+
+.wizard_field_combine {
+    background-color: #d9edf7;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.css-form input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+}
+
+.css-form input.ng-valid.ng-dirty {
+    background-color: '';
+}
