@@ -1,43 +1,151 @@
-<div class="col-xs-9" style="height: 550px; overflow: auto;" data-spy="scroll" data-target="#myScrollspy">
-    <h2 id="section-1"><i class="fa fa-calendar" />&nbsp;&nbsp;תאריכים</h2>
-        מילוי תאריכים לפעילות
-        <div class="row">
-            <div class="col-md-6">
-                <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}"
-                           ng-model="dt" is-open="opened"
-                           datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                           show-weeks="false"
-                           ng-required="true" close-text="סגור" current-text="היום" clear-text="נקה" />
-                    <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span>
-                </p>
+<div class="col-lg-9" style="height: 550px; overflow: scroll;" scroll-spy="" data-target="#leftmenu" data-scroll-offset="80" id="main_wizard">
+    <form role="form" name="wizard_form" novalidate class="css-form">
+        <div class="form-group">
+            <h2 id="section-general"><i class="fa fa-calendar" />&nbsp;&nbsp;כללי</h2>
+            <div step="Dates" class="row">
+                <div class="row">
+                    <div class="col-lg-6 control-group" ng-class="{'has-error': dates.wizard_date_error}">
+                        <label for="wizard_date" class="col-lg-2" style="margin-top: 5px;">תאריך</label>
+                        <input type="text" class="form-control col-lg-6" readonly
+                               id="wizard_date" name="wizard_date" placeholder="תאריך..."
+                               datepicker-popup="{{date_format}}" ng-required="true"
+                               ng-model="dates.wizard_date" is-open="dates.date_opened"
+                               datepicker-options="dates.date_options" date-disabled="dates.disabled(date, mode)"
+                               close-text="סגור" current-text="היום" clear-text="נקה"
+                               data-toggle="tooltip" data-placement="top" title="{{dates.wizard_date_error}}"/>
+                        <button class="btn btn-default col-lg-2" ng-click="dates.openDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="wizard_class" class="col-lg-2" style="margin-top: 5px;">כיתה</label>
+                        <select class="form-control col-lg-6"
+                               id="wizard_class" name="wizard_class" placeholder="בחר/י כיתה..."
+                               ng-model="dates.wizard_class" ng-required="true">
+                            <option>כיתה א</option>
+                            <option>כיתה ב</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div step="Hours" class="row">
+                <h2 id="section-hours"><i class="fa fa-clock-o" />&nbsp;&nbsp;שעות והחזרים</h2>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="wizard_hours" class="col-lg-3" style="margin-top: 5px;">שעות</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="10" step="0.5"
+                                    id="wizard_hours" name="wizard_hours" placeholder="שעות בכיתה"
+                                    ng-model="hours.wizard_hours" ng-required="true" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="wizard_km" class="col-lg-3" style="margin-top: 5px;">ק"מ</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="1000" step="0.5"
+                                   id="wizard_km" name="wizard_km" placeholder='ק"מ'
+                                   ng-model="hours.wizard_km" ng-required="true" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="wizard_trans" class="col-lg-3" style="margin-top: 5px;">נסיעות</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="1000" step="0.5"
+                                   id="wizard_trans" name="wizard_trans" placeholder='נסיעות'
+                                   ng-model="hours.wizard_trans" ng-required="true" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row" ng-class="{'panel wizard_field_combine': hours.wizard_other_refunds}">
+                        <div class="col-lg-12">
+                            <label for="wizard_other_refunds" class="col-lg-3" style="margin-top: 5px;">שונות</label>
+                            <input class="form-control col-lg-5 text-center" type="number" min="0" max="1000" step="0.5"
+                                   id="wizard_other_refunds" name="wizard_other_refunds" placeholder='שונות'
+                                   ng-model="hours.wizard_other_refunds" ng-required="true" />
+                        </div>
+                        <p>&nbsp;</p>
+                        <div class="col-lg-12" ng-show="hours.wizard_other_refunds" >
+                            <label for="wizard_other_refunds_notes" class="col-lg-3" style="margin-top: 5px;">סיבת החזרים</label>
+                            <textarea class="form-control col-lg-9" rows="3"
+                                   id="wizard_other_refunds_notes" name="wizard_other_refunds_notes" placeholder='סיבת החזרים'
+                                   ng-model="hours.wizard_other_refunds_notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label for="wizard_general_notes" class="col-lg-12" style="margin-top: 5px;">הערות כלליות</label>
+                    <textarea class="form-control col-lg-12 text-right" rows="8"
+                           id="wizard_general_notes" name="wizard_general_notes" placeholder='הערות כלליות'
+                           ng-model="wizard_general_notes" ng-required="true"></textarea>
+                </div>
+            </div>
+            <hr>
+            <div step="Convs" class="row">
+                <h2 id="section-convs"><i class="fa fa-headphones" />&nbsp;&nbsp;שיחות אישיות</h2>
+                    איכשהו מסך שיחות אישיות
+            </div>
+            <hr>
+            <div step="Direction" class="row">
+                <h2 id="section-direction">הכוון</h2>
+                    בחודשים רלוונטיים - יופיע כאן סעיף הכוון
+            </div>
+            <hr>
+            <div step="Activities" class="row">
+                <h2 id="section-activities">פעילות כיתתית</h2>
+                    איזו פעילות? שאלות על הפעילות?
+            </div>
+            <hr>
+            <div step="Yearly" class="row">
+                <h2 id="section-yearly">מודל שנתי</h2>
+                אם שייך - מודל שנתי...
             </div>
         </div>
-    <hr>
-    <h2 id="section-2">שעות והחזרים</h2>
-        דיווח שעות והחזרים שונים
-    <hr>
-    <h2 id="section-3">שיחות אישיות</h2>
-        איכשהו מסך שיחות אישיות
-    <hr>
-    <h2 id="section-4">הכוון</h2>
-        בחודשים רלוונטיים - יופיע כאן סעיף הכוון
-    <hr>
-    <h2 id="section-5">פעילות כיתתית</h2>
-        איזו פעילות? שאלות על הפעילות?
-    <hr>
-    <h2 id="section-6">מודל שנתי</h2>
-    אם שייך - מודל שנתי...
+    </form>
 </div>
-<div class="col-xs-3" id="myScrollspy">
-    <ul class="nav nav-tabs nav-stacked affix-top" data-spy="affix" data-offset-top="125">
-        <li class="active"><a href="#section-1">תאריכים</a></li>
-        <li><a href="#section-2">שעות והחזרים</a></li>
-        <li><a href="#section-3">שיחות אישיות</a></li>
-        <li><a href="#section-4">הכוון</a></li>
-        <li><a href="#section-5">פעילות כיתתית</a></li>
-        <li><a href="#section-6">מודל שנתי</a></li>
+<div class="col-lg-3 text-center" id="leftmenu">
+    <div class="alert alert-info">
+        <strong>
+            {{dates.wizard_date ? dates.wizard_date.string() : '[בחר תאריך]'}} -
+            {{dates.wizard_class ? dates.wizard_class        : '[בחר כיתה]'}}
+        </strong>
+    </div>
+    <ul class="center-block nav nav-tabs nav-stacked" >
+        <li class="active"><a prevent-default="" scroll-to="section-general" href="#section-general">כללי</a></li>
+        <li><a prevent-default="" scroll-to="section-hours"      href="#section-hours">שעות והחזרים</a></li>
+        <li><a prevent-default="" scroll-to="section-convs"      href="#section-convs"     >שיחות אישיות</a></li>
+        <li><a prevent-default="" scroll-to="section-direction"  href="#section-direction" >הכוון</a></li>
+        <li><a prevent-default="" scroll-to="section-activities" href="#section-activities">פעילות כיתתית</a></li>
+        <li><a prevent-default="" scroll-to="section-yearly"     href="#section-yearly"    >מודל שנתי</a></li>
     </ul>
+    <br/>
+    <div id="wizard_progress">
+        <label class="text-right">מצב מילוי האשף:</label>
+        <br/>
+        <progressbar max="100" ng-class="{'progress-striped active': wizard_percentage < 100, '': wizard_percentage == 100}" type="{{calc_wizard_progress_type()}}" value="wizard_percentage">
+            <span ng-style="{'color': wizard_progress_color}" >{{wizard_percentage}}%</span>
+        </progressbar>
+
+        <div class="text-right">
+            <a id="error_toggler" href="#" data-toggle="collapse" class="active" data-target="#error_list" ng-click="error_list_open = !error_list_open">
+                <i class="glyphicon glyphicon-folder-open" ng-show="error_list_open"></i>
+                <i class="glyphicon glyphicon-folder-close" ng-show="!error_list_open"></i>
+                שגיאות מילוי
+            </a>
+        </div>
+        <div id="error_list" class="collapse">
+            <ul class="list-group">
+                <li class="alert-danger" ng-repeat="e in wizard_errors">{{e.title}}</li>
+            </ul>
+        </div>
+    </div>
 </div>
+<script>
+    $("#error_toggler").click(function(){
+        $(this).toggleClass('active, inactive');
+    });
+    $('#wizard_date').tooltip();
+</script>

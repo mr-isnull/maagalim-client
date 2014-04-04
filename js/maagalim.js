@@ -1,125 +1,5 @@
 
-Array.prototype.any = function(prop) {
-    console.log('any function');
-    for (var idx = 0; idx < this.length; ++idx) {
-        if (this[idx][prop]) {
-            return true;
-        }
-    }
-    return false;
-}
-
-Array.prototype.all = function(prop) {
-    console.log('all function');
-    return !(this.any(prop));
-}
-
-var controllers = angular.module('controllers', []);
-
-controllers.controller('dashboardController', function($scope, $http) {
-    console.log('dashboardController init called');
-    var students = {};
-
-    Class = function(id, age, school, number, studentsCount) {
-        this.id = id;
-        this.age = age;
-        this.school = school;
-        this.number = number;
-        this.studentsCount = studentsCount;
-    }
-
-    $http.get('/_Details/_Dashboard')
-         .success(function(data) {
-             $scope.classes = data.classes;
-             $.each($scope.classes, function(item, value) {
-                 $scope.studentsCount += value.studentsCount;
-             });
-             $scope.totalConvsCount = data.totalConvsCount;
-             $scope.totalActivities = data.totalActivities;
-             $scope.totalHours = data.totalHours;
-             $scope.guidance = data.guidance;
-         })
-        .error(function(data, status) {
-             console.error('ERROR while lodaing dashboard ' + data + ' status: ' + status);
-         });
-
-    $scope.classes = undefined;
-
-    $scope.studentsCount = 0;
-
-    $scope.totalConvsCount = 0;
-
-    $scope.totalActivities = 0;
-
-    $scope.totalHours = 0;
-
-    $scope.features = [];
-    $scope.addFeature = function(title, number, bullets) {
-        $scope.features.push({
-            image: '../img/',
-            title: title,
-            mainNumber: number,
-            bullets: bullets
-        });
-    };
-
-    $scope.addFeature('שיחות אישיות', '4', []);
-    $scope.addFeature('פעילויות', '2', []);
-    $scope.addFeature('הכוון', '5', ['דגש לגבי מילוי החודש']);
-    $scope.addFeature('נעילת חודש', '72%', ['קצת פירוט על מה חסר', 'ומה דרוש להשלמה']);
-});
-
-controllers.controller('userController', function($scope, $http) {
-    console.log('userController init called');
-    $scope.guider = {lastName: 'כהן', firstName: 'משה', id: 1234};
-
-    var messages = [{id: 1234, from: 'דוד', time: new Date(), message: 'מי שלח אותך?', seen: true},
-                    {id: 4321, from: 'משה', time: new Date(), message: 'מה עם הדוחות?', seen: true}];
-
-    $scope.messages = messages;
-});
-
-controllers.controller('wizardController', function($scope) {
-    console.log('wizardController created');
-    $scope.today = function() {
-        $scope.dt = new Date();
-    };
-    $scope.today();
-
-    // Disable weekend selection
-    $scope.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 5 || date.getDay() === 6 ) );
-    };
-
-    $scope.open = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        $scope.opened = true;
-    };
-    $scope.opened = true;
-
-    $scope.dateOptions = {
-        'year-format': "'yyyy'",
-        'starting-day': 0,
-        'show-weeks': false
-    };
-
-    $scope.format = 'dd/MM/yyyy';
-});
-
-controllers.controller('directionController', function($scope) {
-    console.log('directionController created');
-
-    var shvatVisits = [{inst:"קרני שומרון" , feedback : "היה מוצלח"},
-                        {inst: "ישיבת תל אביב", feedback : "היה מעפן"}];
-
-    var adarVisits = [{inst: "עלי", feedback : "היה מאוד מוצלח, נראה שזה המקום"}];
-
-    $scope.visits = {shvat : shvatVisits , adar : adarVisits};
-});
-
-var maagalimApp = angular.module('maagalimApp', ['ngRoute', 'ui.bootstrap', 'controllers']);
+var maagalimApp = angular.module('maagalimApp', ['ngRoute', 'ui.bootstrap']);
 
 maagalimApp.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
@@ -129,3 +9,119 @@ maagalimApp.config(['$routeProvider', '$locationProvider',
             .when('/direction', {templateUrl: 'partials/direction.html', controller: 'directionController'});
         $locationProvider.html5Mode(true);
     }]);
+
+// some generic function for prototyping js objects
+
+Number.prototype.pad = function(size) {
+    var s = this + "";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
+Date.prototype.string = function(with_time) {
+    return this.getDate().pad(2) + '/' + (this.getMonth()+1).pad(2) + '/' + (this.getYear()+1900) +
+           (with_time ? (' ' + this.getHours().pad(2) + ':' + this.getMinutes().pad(2) + ':' + this.getSeconds().pad(2)) : '');
+}
+
+Array.prototype.any = function(prop) {
+    for (var idx = 0; idx < this.length; ++idx) {
+        if (this[idx][prop]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+Array.prototype.all = function(prop) {
+    return !(this.any(prop));
+}
+
+function extend(base, sub) {
+    // Avoid instantiating the base class just to setup inheritance
+    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+    // for a polyfill
+    sub.prototype = Object.create(base.prototype);
+    // Remember the constructor property was set wrong, let's fix it
+    sub.prototype.constructor = sub;
+    // In ECMAScript5+ (all modern browsers), you can make the constructor property
+    // non-enumerable if you define it like this instead
+    Object.defineProperty(sub.prototype, 'constructor', {
+        enumerable: false,
+        value: sub
+    });
+}
+
+function parseDate(str){
+    var d=0, m=0, y=0;
+    var parsed = false;
+    var t = str.match(/^(\d{2})[\/\-\.](\d{2})[\/\-\.](\d{4})$/);
+    if(t!==null){
+        d=+t[1];
+        m=+t[2];
+        y=+t[3];
+        parsed = true;
+    }
+    else {
+        t = str.match(/^(\d{4})[\/\-\.](\d{2})[\/\-\.](\d{2})$/);
+        if(t!==null){
+            d=+t[3];
+            m=+t[2];
+            y=+t[1];
+            parsed = true;
+        }
+    }
+
+    if (parsed) {
+        var date = new Date(y,m-1,d);
+        if(date.getFullYear()===y && date.getMonth()===m-1){
+            return date;
+        }
+    }
+    return null;
+}
+
+maagalimApp.directive('scrollSpy', function($timeout){
+    return {
+        restrict: 'A',
+        link: function(scope, elem, attr) {
+            var offset = parseInt(attr.scrollOffset, 10)
+            if(!offset) offset = 10;
+            console.log("offset:  " + offset);
+            elem.scrollspy({ "offset" : offset});
+            scope.$watch(attr.scrollSpy, function(value) {
+                $timeout(function() {
+                    elem.scrollspy('refresh', { "offset" : offset})
+                }, 1);
+            }, true);
+        }
+    }
+});
+
+maagalimApp.directive('preventDefault', function() {
+    return function(scope, element, attrs) {
+        jQuery(element).click(function(event) {
+            event.preventDefault();
+        });
+    }
+});
+
+maagalimApp.directive("scrollTo", ["$window", function($window){
+    return {
+        restrict : "AC",
+        compile : function(){
+
+            function scrollInto(elementId) {
+                if(!elementId) $window.scrollTo(0, 0);
+                //check if an element can be found with id attribute
+                var el = document.getElementById(elementId);
+                if(el) el.scrollIntoView();
+            }
+
+            return function(scope, element, attr) {
+                element.bind("click", function(event){
+                    scrollInto(attr.scrollTo);
+                });
+            };
+        }
+    };
+}]);
