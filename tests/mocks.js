@@ -30,4 +30,7 @@ maagalimDev.run(function($httpBackend) {
     $httpBackend.whenGET('/api/guider/personalConvs/$count').respond(200, 5);
 
     $httpBackend.whenGET(/\/.*/).passThrough();
+
+    $httpBackend.whenGET(/.*maagalimdev\.prinz\.co\.il\/.*/).passThrough();
+    $httpBackend.whenPOST(/.*maagalimdev\.prinz\.co\.il\/.*/).passThrough();
 });

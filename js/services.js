@@ -1,4 +1,77 @@
 
+maagalimApp.service('connection', function($http) {
+    var self = this;
+    this.base_url = 'http://maagalimdev.prinz.co.il';
+
+    this.get = function(url, success, error) {
+        $http({
+            method: 'GET',
+            url: self.base_url + '/' + url,
+            withCredentials: true
+        })
+        .success(function(data) {
+            if (success) {
+                success(data);
+            };
+        })
+        .error(function(data) {
+            if (error) {
+                error(data);
+            }
+        });
+
+    };
+
+    this.post = function(url, data, success, error) {
+        var postish_data = $.param(data);
+        $http({
+            method: 'POST',
+            url: self.base_url + '/' + url,
+            data: postish_data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            withCredentials: true
+        })
+        .success(function(data) {
+            if (success) {
+                success(data);
+            };
+        })
+        .error(function(data) {
+            if (error) {
+                error(data);
+            }
+        });
+    };
+});
+
+maagalimApp.service('userService', function($http, $window, connection) {
+    console.log('user service init...');
+    var self = this;
+    this.login = function(username, password, success, error) {
+        console.log('userSerivce: login ' + username);
+        var creds = {username: username, password: password, year: 2013};
+        connection.post('/_Account/_Login', creds, function(data){
+            console.log('got ' + data.status + ' as response...');
+            var id = data.status;
+            if (data.status > 0) {
+                connection.get('/_Account/_WhoAmI', function(data){
+                    data[id] = data.status;
+                    $window.sessionStorage.user = JSON.stringify(data);
+                    if (success) {
+                        success(self.getUser());
+                    }
+                });
+            }
+        });
+    }
+
+    this.getUser = function() {
+        if ($window.sessionStorage.user) {
+            return $.parseJSON($window.sessionStorage.user);
+        }
+    }
+});
+
 maagalimApp.service('wizardService', function() {
     var self = this;
     this.wizard_steps = [];

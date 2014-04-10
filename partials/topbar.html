@@ -1,0 +1,59 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><img src="img/logo.png" />&nbsp;&nbsp;מעגלים 2.0</a>
+    </div>
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-left" ng-controller="userController">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="icon" ng-class="{'icon-red icon-envelope-open': (messages.all('seen')), 'icon-black icon-envelope-closed' : !messages.all('seen')}"></i>  <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-messages">
+                <li ng-repeat="msg in messages">
+                    <a href="/message/{{msg.id}}">
+                        <div>
+                            <strong>{{msg.from}}</strong>
+                                    <span class="pull-left text-muted">
+                                        <em>{{msg.time.toLocaleString()}}</em>
+                                    </span>
+                        </div>
+                        <div>{{msg.message}}</div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a class="text-center" href="#">
+                        <strong>לכל ההודעות</strong>
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+            </ul>
+            <!-- /.dropdown-messages -->
+        </li>
+        <!-- /.dropdown -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                {{full_name()}}
+                <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a href="#"><i class="fa fa-user fa-fw"></i> פרטי הדרכה</a>
+                </li>
+                <li class="divider"></li>
+                <li><a ui-sref="anonymous.logout"><i class="fa fa-sign-out fa-fw"></i> ניתוק</a>
+                </li>
+             </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+
+</nav>
