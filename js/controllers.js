@@ -1,4 +1,26 @@
 
+maagalimApp.controller('loginController', function($scope, $rootScope, $state, userService) {
+    console.log('login controller init called');
+    $scope.login = function() {
+        if (!$scope.username || !$scope.password) {
+            return;
+        }
+        console.log('do login for username ' + $scope.username);
+        var user = userService.login($scope.username, $scope.password,
+            function(user) {
+                if (user !== undefined)  {
+                    $rootScope.loggedIn = user;
+                    $state.go('app.main');
+                }
+            });
+    }
+});
+
+maagalimApp.controller('logoutController', function($scope, $state, $window) {
+    delete $window.sessionStorage.user;
+    $state.go('anonymous.login');
+});
+
 maagalimApp.controller('dashboardController', function($scope, $http) {
     console.log('dashboardController init called');
 
@@ -43,9 +65,14 @@ maagalimApp.controller('dashboardController', function($scope, $http) {
     $scope.addFeature('נעילת חודש', '72%', ['קצת פירוט על מה חסר', 'ומה דרוש להשלמה']);
 });
 
-maagalimApp.controller('userController', function ($scope) {
+maagalimApp.controller('userController', function ($scope, userService) {
     console.log('userController init called');
-    $scope.guider = {lastName: 'כהן', firstName: 'משה', id: 1234};
+    $scope.guider = userService.getUser();
+
+    $scope.full_name = function() {
+        console.log('full name called')
+        return $scope.guider.firstName;
+    }
 
     $scope.messages = [
         {id: 1234, from: 'דוד', time: new Date(), message: 'מי שלח אותך?', seen: true},
@@ -130,3 +157,4 @@ maagalimApp.controller('directionController', function($scope) {
 
     $scope.visits = {shvat : shvatVisits , adar : adarVisits};
 });
+
