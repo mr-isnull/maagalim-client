@@ -1,14 +1,31 @@
 
-var maagalimApp = angular.module('maagalimApp', ['ngRoute', 'ui.bootstrap']);
+var maagalimApp = angular.module('maagalimApp', ['ui.bootstrap', 'ui.router'])
+                         .run(function($rootScope, $state, userService) {
+                                                $rootScope.$on("$stateChangeStart",
+                                                    function(event, toState, toParams, fromState, fromParams) {
+                                                        if (userService.getUser() === undefined && toState.name !== 'anonymous.login') {
+                                                            console.log('coming from state ' + fromState.name + ' to state ' + toState.name);
+                                                            event.preventDefault();
+                                                            $state.go('anonymous.login');
+                                                        }
+                                                    });
+                                             });
 
-maagalimApp.config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
-        $routeProvider
-            .when('/', {templateUrl: 'partials/main.html', controller: 'dashboardController' })
-            .when('/wizard', {templateUrl: 'partials/wizard.html', controller: 'wizardController'})
-            .when('/direction', {templateUrl: 'partials/direction.html', controller: 'directionController'});
-        $locationProvider.html5Mode(true);
-    }]);
+maagalimApp.config(
+    function($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/');
+
+        // login routes
+        $stateProvider.state('anonymous', {abstract: true, views: {'topbar': {template: '<ui-view/>'}}, data: {access: 'anon'}})
+                      .state('anonymous.login',  {url: '/login',  templateUrl: 'partials/login.html', controller: 'loginController'})
+                      .state('anonymous.logout', {url: '/logout', template: '<ui-view/>', controller: 'logoutController'});
+
+
+                $stateProvider.state('app',           {abstract: true,    views: {'topbar@':  {templateUrl: 'partials/topbar.html'}, 'sidemenu@': {templateUrl: 'partials/sidemenu.html'}},    data: {access: 'app'}})
+                      .state('app.main',      {url: '/',          views: {'cont@': {templateUrl: 'partials/main.html',        controller: 'dashboardController'}}})
+                      .state('app.wizard',    {url: '/wizard',    views: {'cont@': {templateUrl: 'partials/wizard.html'}},    controller: 'wizardController'})
+                      .state('app.direction', {url: '/direction', views: {'cont@': {templateUrl: 'partials/direction.html'}}, controller: 'directionController'});
+    });
 
 // some generic function for prototyping js objects
 
