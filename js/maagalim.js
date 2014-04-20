@@ -1,5 +1,5 @@
 
-var maagalimApp = angular.module('maagalimApp', ['ui.bootstrap', 'ui.router'])
+var maagalimApp = angular.module('maagalimApp', ['ui.bootstrap', 'ui.router', 'blockUI'])
                          .run(function($rootScope, $state, userService) {
                                                 $rootScope.$on("$stateChangeStart",
                                                     function(event, toState, toParams, fromState, fromParams) {
@@ -26,6 +26,12 @@ maagalimApp.config(
                       .state('app.wizard',    {url: '/wizard',    views: {'cont@': {templateUrl: 'partials/wizard.html'}},    controller: 'wizardController'})
                       .state('app.direction', {url: '/direction', views: {'cont@': {templateUrl: 'partials/direction.html'}}, controller: 'directionController'});
     });
+
+maagalimApp.config(function(blockUIConfigProvider) {
+    blockUIConfigProvider.message('מתחבר...');
+    blockUIConfigProvider.delay(1);
+
+});
 
 // some generic function for prototyping js objects
 

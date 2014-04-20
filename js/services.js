@@ -50,19 +50,40 @@ maagalimApp.service('userService', function($http, $window, connection) {
     this.login = function(username, password, success, error) {
         console.log('userSerivce: login ' + username);
         var creds = {username: username, password: password, year: 2013};
-        connection.post('/_Account/_Login', creds, function(data){
-            console.log('got ' + data.status + ' as response...');
-            var id = data.status;
-            if (data.status > 0) {
-                connection.get('/_Account/_WhoAmI', function(data){
-                    data[id] = data.status;
-                    $window.sessionStorage.user = JSON.stringify(data);
-                    if (success) {
-                        success(self.getUser());
+        connection.post('/_Account/_Login', creds,
+            function(data) { // success
+                console.log('got ' + data.status + ' as response...');
+                var id = data.status;
+                if (data.status > 0) { // good
+                    connection.get('/_Account/_WhoAmI', function(data){
+                        data[id] = data.status;
+                        $window.sessionStorage.user = JSON.stringify(data);
+                        if (success) {
+                            success(self.getUser());
+                        }
+                    }, function(data) {
+                        if (error) {
+                            error(data);
+                        }
+                    });
+                }
+                else { // usually - wrong username & password
+                    if (error) {
+                        var message = 'שגיאה';
+                        switch (data.status) {
+                            case -1: message = 'שם משתמש או סיסמא לא נכונים'; break;
+                            case -2: message = 'החיבור פג, יש לנסות שנית'; break;
+                        }
+                        error({status: data.status, message: message, raw_error: data});
                     }
-                });
+                }
+            },
+            function(data) { // error
+                if (error) {
+                    error(data);
+                }
             }
-        });
+        );
     }
 
     this.getUser = function() {
