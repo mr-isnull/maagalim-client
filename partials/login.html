@@ -8,6 +8,7 @@
         <br/>
         <input type="text" class="form-control" placeholder="שם משתמש" ng-model="username" required autofocus>
         <input style="margin-top: 5px;" type="password" class="form-control" ng-model="password" placeholder="סיסמא" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()">כניסה</button>
+        <div class="alert alert-danger text-center" ng-show="error_message" ng-animate="{show: 'slideDown', hide: 'slideUp'}">{{error_message}}</div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()" ng-disabled="loggin">{{loggin ? "מתחבר..." : "כניסה"}}</button>
     </form>
 </div>

@@ -1,18 +1,35 @@
 
-maagalimApp.controller('loginController', function($scope, $rootScope, $state, userService) {
+maagalimApp.controller('loginController', function($scope, $rootScope, $state, $timeout, userService, blockUI) {
     console.log('login controller init called');
+    $scope.loggin = false;
+    $scope.error_message = undefined;
+
     $scope.login = function() {
         if (!$scope.username || !$scope.password) {
             return;
         }
         console.log('do login for username ' + $scope.username);
+        $scope.loggin = true;
+        $scope.error_message = undefined;
+        blockUI.start();
         var user = userService.login($scope.username, $scope.password,
-            function(user) {
+            function (user) {
+                $scope.loggin = false;
+                blockUI.stop();
                 if (user !== undefined)  {
                     $rootScope.loggedIn = user;
                     $state.go('app.main');
                 }
-            });
+            },
+            function (error) {
+                $scope.loggin = false;
+                blockUI.stop();
+                $scope.error_message = error.message;
+                $timeout(function() {
+                    $scope.error_message = undefined;
+                }, 2000);
+            }
+        );
     }
 });
 
