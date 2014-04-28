@@ -9,6 +9,23 @@ var maagalimApp = angular.module('maagalimApp', ['ui.bootstrap', 'ui.router', 'b
                                                             $state.go('anonymous.login');
                                                         }
                                                     });
+                                                $rootScope.$on("$locationChangeSuccess",
+                                                    function(next, current) {
+                                                        //align master/details views according to content
+                                                        if(angular.element('#master').children().length) {
+                                                            angular.element('#master').removeClass('hidden-lg');
+                                                            angular.element('#master').addClass('col-lg-2');
+
+                                                            angular.element('#detail').removeClass('col-lg-10');
+                                                            angular.element('#detail').addClass('col-lg-8');
+                                                        } else {
+                                                            angular.element('#master').removeClass('col-lg-2');
+                                                            angular.element('#master').addClass('hidden-lg');
+
+                                                            angular.element('#detail').removeClass('col-lg-8');
+                                                            angular.element('#detail').addClass('col-lg-10');
+                                                        }
+                                                    });
                                              });
 
 maagalimApp.config(
@@ -21,10 +38,10 @@ maagalimApp.config(
                       .state('anonymous.logout', {url: '/logout', template: '<ui-view/>', controller: 'logoutController'});
 
 
-                $stateProvider.state('app',           {abstract: true,    views: {'topbar@':  {templateUrl: 'partials/topbar.html'}, 'sidemenu@': {templateUrl: 'partials/sidemenu.html'}},    data: {access: 'app'}})
+        $stateProvider.state('app',           {abstract: true,    views: {'topbar@':  {templateUrl: 'partials/topbar.html'}, 'sidemenu@': {templateUrl: 'partials/sidemenu.html'}},    data: {access: 'app'}})
                       .state('app.main',      {url: '/',          views: {'cont@': {templateUrl: 'partials/main.html',        controller: 'dashboardController'}}})
                       .state('app.wizard',    {url: '/wizard',    views: {'cont@': {templateUrl: 'partials/wizard.html'}},    controller: 'wizardController'})
-                      .state('app.direction', {url: '/direction', views: {'cont@': {templateUrl: 'partials/direction.html'}}, controller: 'directionController'});
+                      .state('app.direction', {url: '/direction', views: {'master@': {templateUrl: 'partials/students.html'},'cont@': {templateUrl: 'partials/direction.html'}}, controller: 'directionController'});
     });
 
 maagalimApp.config(function(blockUIConfigProvider) {

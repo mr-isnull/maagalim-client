@@ -34,10 +34,12 @@
 
         <div ui-view="topbar"></div>
 
-        <div class="row col-lg-12">
+        <div class="row">
             <div ui-view="sidemenu" class="navbar-default navbar-static-side col-lg-2"></div>
 
-            <div class="col-lg-10" ui-view="cont" autoscroll></div>
+            <!-- these divs classes are manipulated in maagalim.js -->
+            <div id="master" class="hidden-lg" ui-view="master" autoscroll></div>
+            <div id="detail" class="col-lg-10" ui-view="cont" autoscroll></div>
             <!-- /#page-wrapper -->
         </div>
     </div>
